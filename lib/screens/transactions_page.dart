@@ -32,6 +32,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
   bool bottomIsSwitched = false;
   int bottomRadioValue = 0;
 
+  bool creditCheckedValue = false;
+  bool debitCheckedValue = false;
+  bool amountCheckedValue = false;
+  RangeValues _currentRangeValues = const RangeValues(1000, 80000);
+
   @override
   void initState() {
     // TODO: implement initState
@@ -220,66 +225,125 @@ class _TransactionsPageState extends State<TransactionsPage> {
         builder: (context){
           return StatefulBuilder(
               builder: (context, state){
-                return Padding(
-                  padding: const EdgeInsets.all(15.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      const SizedBox(height: 20.0,),
-                      const Text(
-                        "Sort and Filter",
-                        style: TextStyle(
-                            fontSize: 20.0,
-                            fontWeight: FontWeight.bold
+                return SingleChildScrollView(
+                  child: Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 20.0,),
+                        const Text(
+                          "Sort and Filter",
+                          style: TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold
+                          ),
                         ),
-                      ),
-                      const Divider(thickness: 1.0,),
-                      Padding(
-                        padding: const EdgeInsets.only(top: 20.0, left: 5.0, right: 5.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            const Text(
-                              "Sort by Time",
-                              style: TextStyle(
-                                  fontSize: 18.0,
-                                  fontWeight: FontWeight.bold
+                        const Divider(thickness: 1.0,),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 20.0, left: 5.0, right: 5.0),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const Text(
+                                "Sort by Time",
+                                style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold
+                                ),
                               ),
-                            ),
 
-                            Row(
-                              children: [
-                                Radio(
-                                  value: 0,
-                                  groupValue: bottomRadioValue,
-                                  onChanged: (int? value) {
-                                    state(() {
-                                      bottomRadioValue = value!;
-                                    });
-                                  },
-                                ),
-                                Text(sortOptions[0]),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Radio(
-                                  value: 1,
-                                  groupValue: bottomRadioValue,
-                                  onChanged: (int? value) {
-                                    state(() {
-                                      bottomRadioValue = value!;
-                                    });
-                                  },
-                                ),
-                                Text(sortOptions[1]),
-                              ],
-                            ),
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: 0,
+                                    groupValue: bottomRadioValue,
+                                    onChanged: (int? value) {
+                                      state(() {
+                                        bottomRadioValue = value!;
+                                      });
+                                    },
+                                  ),
+                                  Text(sortOptions[0]),
+                                ],
+                              ),
+                              Row(
+                                children: [
+                                  Radio(
+                                    value: 1,
+                                    groupValue: bottomRadioValue,
+                                    onChanged: (int? value) {
+                                      state(() {
+                                        bottomRadioValue = value!;
+                                      });
+                                    },
+                                  ),
+                                  Text(sortOptions[1]),
+                                ],
+                              ),
 
-                          ],
+                            ],
+                          ),
                         ),
-                      )
-                    ],
+
+                        const Text(
+                          "\nFilter by",
+                          style: TextStyle(
+                              fontSize: 18.0,
+                              fontWeight: FontWeight.bold
+                          ),
+                        ),
+
+                        CheckboxListTile(
+                          title: const Text("Credit"),
+                          value: creditCheckedValue,
+                          onChanged: (newValue) {
+                            state(() {
+                              creditCheckedValue = newValue!;
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                        ),
+
+                        CheckboxListTile(
+                          title: const Text("Debit"),
+                          value: debitCheckedValue,
+                          onChanged: (newValue) {
+                            state(() {
+                              debitCheckedValue = newValue!;
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                        ),
+
+                        CheckboxListTile(
+                          title: const Text("Amount "),
+                          value: amountCheckedValue,
+                          onChanged: (newValue) {
+                            state(() {
+                              amountCheckedValue = newValue!;
+                            });
+                          },
+                          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                        ),
+
+                        RangeSlider(
+                          values: _currentRangeValues,
+                          max: 100000,
+                          divisions: 10000,
+                          labels: RangeLabels(
+                            _currentRangeValues.start.round().toString(),
+                            _currentRangeValues.end.round().toString(),
+                          ),
+                          onChanged: (RangeValues values) {
+                            state(() {
+                              _currentRangeValues = values;
+                            });
+                          },
+                        )
+
+                      ],
+                    ),
                   ),
                 );
               }
