@@ -40,7 +40,6 @@ class BanksModel {
     }
     return map;
   }
-
 }
 
 /// date : "2021-02-08T13:45:00.000Z"
@@ -75,4 +74,13 @@ class Transactions {
     return map;
   }
 
+  @override
+  String toString() {
+    return 'Transactions('
+      'date: $date,'
+      'name: $name,'
+      'amount: $amount,'
+      'typeOfTransaction: $typeOfTransaction'
+    ')';
+  }
 }

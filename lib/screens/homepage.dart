@@ -15,6 +15,7 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
 
   List<BanksModel> listOfBanks = [];
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -42,7 +43,8 @@ class _HomepageState extends State<Homepage> {
         ],
       ),
 
-      body: ListView.builder(
+      body: isLoading ? const CircularProgressIndicator() :
+      ListView.builder(
         padding: const EdgeInsets.all(5.5),
         itemCount: listOfBanks.length,
         itemBuilder: _itemBuilder,
@@ -143,6 +145,10 @@ class _HomepageState extends State<Homepage> {
   }
 
   Future loadJson() async {
+
+    setState((){
+      isLoading = true;
+    });
     String data = await rootBundle.loadString("assets/demo.json");
     final jsonResult = jsonDecode(data);
 
@@ -151,6 +157,10 @@ class _HomepageState extends State<Homepage> {
       // print(BanksModel.fromJson(i).bankName);
       // print(BanksModel.fromJson(i).transactions![0].name);
     }
+
+    setState((){
+      isLoading = false;
+    });
 
     // print(listOfBanks.toString());
 

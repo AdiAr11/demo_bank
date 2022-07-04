@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:demo_bank/models/BanksModel.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:grouped_list/grouped_list.dart';
+import "package:collection/collection.dart";
 
 class TransactionsPage extends StatefulWidget {
 
@@ -22,6 +24,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
   bool isLoading = false;
 
   List<String> sortOptions = ["Latest to Oldest", "Oldest to Latest"];
+  List transactions = [];
+  Map<String?,List<Transactions>> orderedTransactions = {};
+  // List t = [];
 
   bool bottomIsChecked = false;
   bool bottomIsSwitched = false;
@@ -56,104 +61,148 @@ class _TransactionsPageState extends State<TransactionsPage> {
       body: isLoading ? const CircularProgressIndicator() :
       Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(
-                    height: 40.0,
-                    child: Image.asset('assets/images/hdfc.png')
-                ),
-                const SizedBox(width: 15.0),
-                Text(
-                  bank.bankName ?? "Null",
-                  style: const TextStyle(
-                      fontSize: 19.0,
-                      fontWeight: FontWeight.bold
-                  ),
-                ),
-
-                const SizedBox(width: 70.0,),
-
-                Text(
-                    "\$ ${bank.balance}",
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20.0
-                  ),
-                ),
-
-              ],
-            ),
-
-            const SizedBox(height: 15.0),
-            Text.rich(
-              TextSpan(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  TextSpan(
-                      text: "${bank.type} (${bank.accountNo})" ,
-                      style: const TextStyle(color: Colors.black)
+                  SizedBox(
+                      height: 40.0,
+                      child: Image.asset('assets/images/hdfc.png')
                   ),
-                  const TextSpan(
-                    text: "  2.5 % p.a",
-                    style: TextStyle(
-                        color: Colors.red,
-                      fontWeight: FontWeight.bold
+                  const SizedBox(width: 15.0),
+                  Text(
+                    bank.bankName ?? "Null",
+                    style: const TextStyle(
+                        fontSize: 19.0,
+                        fontWeight: FontWeight.bold
                     ),
                   ),
+
+                  const SizedBox(width: 70.0,),
+
+                  Text(
+                      "\$ ${bank.balance}",
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0
+                    ),
+                  ),
+
                 ],
               ),
-            ),
 
-            const SizedBox(height: 30.0),
-            const Divider(thickness: 5.0),
+              const SizedBox(height: 15.0),
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                        text: "${bank.type} (${bank.accountNo})" ,
+                        style: const TextStyle(color: Colors.black)
+                    ),
+                    const TextSpan(
+                      text: "  2.5 % p.a",
+                      style: TextStyle(
+                          color: Colors.red,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+                  ],
+                ),
+              ),
 
-            const SizedBox(height: 30.0),
+              const SizedBox(height: 30.0),
+              const Divider(thickness: 5.0),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  "Last 10 Transactions",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0,
-                    color: Colors.black87
+              const SizedBox(height: 30.0),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text(
+                    "Last 10 Transactions",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20.0,
+                      color: Colors.black87
+                    ),
+                  ),
+                  IconButton(
+                      onPressed: (){
+                        _showBottomModalSheet();
+                      },
+                      icon:const Icon(Icons.filter_alt_sharp),
+                  )
+                ],
+              ),
+
+              GroupedListView<dynamic, String>(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                elements: transactions,
+                groupBy: (element) => element["date"],
+                groupComparator: (value1, value2) => value2.compareTo(value1),
+                // itemComparator: (item1, item2) =>
+                //     item1['name'].compareTo(item2['name']),
+                order: bottomRadioValue == 0 ? GroupedListOrder.ASC : GroupedListOrder.DESC,
+                useStickyGroupSeparators: true,
+                groupSeparatorBuilder: (String value) => Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Divider(thickness: 1.0,),
+                      Text(
+                        value.substring(0, 10),
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
                   ),
                 ),
-                IconButton(
-                    onPressed: (){
-                      _showBottomModalSheet();
-                    },
-                    icon:const Icon(Icons.filter_alt_sharp),
-                )
-              ],
-            ),
+                itemBuilder: (c, element) {
 
-            // RadioListTile<String>(
-            //   title: Text(sortOptions[0]),
-            //   value: sortOptions[0],
-            //   groupValue: selectedSortByTime,
-            //   onChanged: (String? value) {
-            //     setState(() {
-            //       selectedSortByTime = value!;
-            //     });
-            //   },
-            // ),
-            // RadioListTile<String>(
-            //   title: Text(sortOptions[1]),
-            //   value: sortOptions[1],
-            //   groupValue: selectedSortByTime,
-            //   onChanged: (String? value) {
-            //     setState(() {
-            //       selectedSortByTime = value!;
-            //     });
-            //   },
-            // ),
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(element['name'],
+                              style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                                fontSize: 17.0,
+                                color: Colors.black87
+                            ),),
+                            element['typeOfTransaction'] == "credit" ?
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("₹ ${element['amount']}",
+                                  style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),),
+                                const Icon(Icons.arrow_upward_rounded, color: Colors.red,)
+                              ],
+                            ) :
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text("₹ ${element['amount']}",
+                                  style: const TextStyle(color: Colors.green, fontWeight: FontWeight.bold),),
+                                const Icon(Icons.arrow_downward, color: Colors.green,),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              ),
 
-          ],
+            ],
+          ),
         ),
       )
 
@@ -176,21 +225,21 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      SizedBox(height: 20.0,),
-                      Text(
+                      const SizedBox(height: 20.0,),
+                      const Text(
                         "Sort and Filter",
                         style: TextStyle(
                             fontSize: 20.0,
                             fontWeight: FontWeight.bold
                         ),
                       ),
-                      Divider(),
+                      const Divider(thickness: 1.0,),
                       Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.only(top: 20.0, left: 5.0, right: 5.0),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
-                            Text(
+                            const Text(
                               "Sort by Time",
                               style: TextStyle(
                                   fontSize: 18.0,
@@ -246,13 +295,31 @@ class _TransactionsPageState extends State<TransactionsPage> {
     String data = await rootBundle.loadString("assets/demo.json");
     final jsonResult = jsonDecode(data);
 
+    bank = BanksModel.fromJson(jsonResult[index]);
+    transactions = bank.transactions!.map((h) => {"date": h.date, "name": h.name,
+      "amount": h.amount, "typeOfTransaction": h.typeOfTransaction}).toList();;
+    // for(Transactions transaction  in bank.transactions!){
+    //   transactions.add(transaction);
+    // }
+
     setState((){
-      bank = BanksModel.fromJson(jsonResult[index]);
       isLoading = false;
     });
 
-    print(bank.transactions);
+    // t = transactions.map((h) => {"date": h.date, "name": h.name,
+    //   "amount": h.amount, "typeOfTransaction": h.typeOfTransaction}).toList();
+    //
+    // print(t);
+
+    // groupByDate();
 
   }
+
+  // groupByDate(){
+  //   orderedTransactions = groupBy(transactions, (Transactions t){
+  //     return t.name;
+  //   });
+  //   print(orderedTransactions);
+  // }
 
 }
