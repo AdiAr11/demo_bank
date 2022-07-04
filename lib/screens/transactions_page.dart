@@ -225,124 +225,172 @@ class _TransactionsPageState extends State<TransactionsPage> {
         builder: (context){
           return StatefulBuilder(
               builder: (context, state){
-                return SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        const SizedBox(height: 20.0,),
-                        const Text(
-                          "Sort and Filter",
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.bold
+                return SafeArea(
+                  child: SingleChildScrollView(
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          const SizedBox(height: 20.0,),
+                          const Text(
+                            "Sort and Filter",
+                            style: TextStyle(
+                                fontSize: 20.0,
+                                fontWeight: FontWeight.bold
+                            ),
                           ),
-                        ),
-                        const Divider(thickness: 1.0,),
-                        Padding(
-                          padding: const EdgeInsets.only(top: 20.0, left: 5.0, right: 5.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                          const Divider(thickness: 1.0,),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0, left: 5.0, right: 5.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                const Text(
+                                  "Sort by Time",
+                                  style: TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.bold
+                                  ),
+                                ),
+
+                                Row(
+                                  children: [
+                                    Radio(
+                                      value: 0,
+                                      groupValue: bottomRadioValue,
+                                      onChanged: (int? value) {
+                                        state(() {
+                                          bottomRadioValue = value!;
+                                        });
+                                      },
+                                    ),
+                                    Text(sortOptions[0]),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    Radio(
+                                      value: 1,
+                                      groupValue: bottomRadioValue,
+                                      onChanged: (int? value) {
+                                        state(() {
+                                          bottomRadioValue = value!;
+                                        });
+                                      },
+                                    ),
+                                    Text(sortOptions[1]),
+                                  ],
+                                ),
+
+                              ],
+                            ),
+                          ),
+
+                          const Text(
+                            "\nFilter by",
+                            style: TextStyle(
+                                fontSize: 18.0,
+                                fontWeight: FontWeight.bold
+                            ),
+                          ),
+
+                          CheckboxListTile(
+                            title: const Text("Credit"),
+                            value: creditCheckedValue,
+                            onChanged: (newValue) {
+                              state(() {
+                                creditCheckedValue = newValue!;
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                          ),
+
+                          CheckboxListTile(
+                            title: const Text("Debit"),
+                            value: debitCheckedValue,
+                            onChanged: (newValue) {
+                              state(() {
+                                debitCheckedValue = newValue!;
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                          ),
+
+                          CheckboxListTile(
+                            title: const Text("Amount "),
+                            value: amountCheckedValue,
+                            onChanged: (newValue) {
+                              state(() {
+                                amountCheckedValue = newValue!;
+                              });
+                            },
+                            controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
+                          ),
+
+                          RangeSlider(
+                            values: _currentRangeValues,
+                            max: 100000,
+                            divisions: 10000,
+                            labels: RangeLabels(
+                              _currentRangeValues.start.round().toString(),
+                              _currentRangeValues.end.round().toString(),
+                            ),
+                            onChanged: (RangeValues values) {
+                              state(() {
+                                _currentRangeValues = values;
+                              });
+                            },
+                          ),
+
+                          Row(
+                            mainAxisSize: MainAxisSize.max,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text(
-                                "Sort by Time",
-                                style: TextStyle(
-                                    fontSize: 18.0,
-                                    fontWeight: FontWeight.bold
+
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2 - 20.0 ,
+                                height: 50.0,
+                                child: ElevatedButton(
+                                    onPressed: (){},
+                                    style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                                side: BorderSide(color: Colors.purple)
+                                            )
+                                        )
+                                    ),
+                                    child: Text("Reset", style: TextStyle(color: Colors.purple),)),
+                              ),
+
+                              SizedBox(
+                                width: MediaQuery.of(context).size.width / 2 - 20.0 ,
+                                height: 50.0,
+                                child: ElevatedButton(
+                                    style: ButtonStyle(
+                                        // foregroundColor: MaterialStateProperty.all<Color>(Colors.white),
+                                        backgroundColor: MaterialStateProperty.all<Color>(Colors.purple),
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                            const RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                                                // side: BorderSide(color: Colors.red)
+                                            )
+                                        )
+                                    ),
+                                    onPressed: (){},
+                                    child: const Text(
+                                        "Apply",
+                                        style: TextStyle(fontSize: 14)
+                                    )
                                 ),
                               ),
-
-                              Row(
-                                children: [
-                                  Radio(
-                                    value: 0,
-                                    groupValue: bottomRadioValue,
-                                    onChanged: (int? value) {
-                                      state(() {
-                                        bottomRadioValue = value!;
-                                      });
-                                    },
-                                  ),
-                                  Text(sortOptions[0]),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Radio(
-                                    value: 1,
-                                    groupValue: bottomRadioValue,
-                                    onChanged: (int? value) {
-                                      state(() {
-                                        bottomRadioValue = value!;
-                                      });
-                                    },
-                                  ),
-                                  Text(sortOptions[1]),
-                                ],
-                              ),
-
                             ],
-                          ),
-                        ),
+                          )
 
-                        const Text(
-                          "\nFilter by",
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              fontWeight: FontWeight.bold
-                          ),
-                        ),
-
-                        CheckboxListTile(
-                          title: const Text("Credit"),
-                          value: creditCheckedValue,
-                          onChanged: (newValue) {
-                            state(() {
-                              creditCheckedValue = newValue!;
-                            });
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                        ),
-
-                        CheckboxListTile(
-                          title: const Text("Debit"),
-                          value: debitCheckedValue,
-                          onChanged: (newValue) {
-                            state(() {
-                              debitCheckedValue = newValue!;
-                            });
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                        ),
-
-                        CheckboxListTile(
-                          title: const Text("Amount "),
-                          value: amountCheckedValue,
-                          onChanged: (newValue) {
-                            state(() {
-                              amountCheckedValue = newValue!;
-                            });
-                          },
-                          controlAffinity: ListTileControlAffinity.leading,  //  <-- leading Checkbox
-                        ),
-
-                        RangeSlider(
-                          values: _currentRangeValues,
-                          max: 100000,
-                          divisions: 10000,
-                          labels: RangeLabels(
-                            _currentRangeValues.start.round().toString(),
-                            _currentRangeValues.end.round().toString(),
-                          ),
-                          onChanged: (RangeValues values) {
-                            state(() {
-                              _currentRangeValues = values;
-                            });
-                          },
-                        )
-
-                      ],
+                        ],
+                      ),
                     ),
                   ),
                 );
