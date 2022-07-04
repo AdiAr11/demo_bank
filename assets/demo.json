@@ -1,0 +1,83 @@
+[
+    {
+        "bankName": "HDFC Bank",
+        "type": "Savings A/C",
+        "balance": "54,285",
+        "accountNo": "XX2625",
+        "transactions": [
+            {
+                "date": "2021-02-08T13:45:00.000Z",
+                "name": "PGVCL Electricity Bill",
+                "amount": 2500.00,
+                "typeOfTransaction": "credit"
+            },
+
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "ATM Withdrawal",
+                "amount": 1500.00,
+                "typeOfTransaction": "credit"
+            },
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "ATM Deposit",
+                "amount": 1400.00,
+                "typeOfTransaction": "debit"
+            },
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "ATM Deposit",
+                "amount": 8500.00,
+                "typeOfTransaction": "debit"
+            },
+
+            {
+                "date": "2021-02-01T13:45:00.000Z",
+                "name": "ATM Withdrawal",
+                "amount": 1200.00,
+                "typeOfTransaction": "credit"
+            }
+        ]
+    },
+
+    {
+        "bankName": "Federal Bank",
+        "type": "Savings A/C",
+        "balance": "5,44,585",
+        "accountNo": "XX7682",
+        "transactions": [
+            {
+                "date": "2021-02-08T13:45:00.000Z",
+                "name": "PGVCL Electricity Bill",
+                "amount": 2500.00,
+                "typeOfTransaction": "credit"
+            },
+
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "ATM Withdrawal",
+                "amount": 1500.00,
+                "typeOfTransaction": "credit"
+            },
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "ATM Deposit",
+                "amount": 1400.00,
+                "typeOfTransaction": "debit"
+            },
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "ATM Deposit",
+                "amount": 8500.00,
+                "typeOfTransaction": "debit"
+            },
+
+            {
+                "date": "2021-02-01T13:45:00.000Z",
+                "name": "ATM Withdrawal",
+                "amount": 1200.00,
+                "typeOfTransaction": "credit"
+            }
+        ]
+    }
+]
