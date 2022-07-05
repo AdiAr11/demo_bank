@@ -64,7 +64,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
       body: isLoading ? const CircularProgressIndicator() :
       Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(left: 10.0, right: 10.0, bottom: 10.0, top: 30.0),
         child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -74,7 +74,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                 children: [
                   SizedBox(
                       height: 40.0,
-                      child: Image.asset('assets/images/hdfc.png')
+                      child: Image.network(bank.imageURL!)
                   ),
                   const SizedBox(width: 15.0),
                   Text(

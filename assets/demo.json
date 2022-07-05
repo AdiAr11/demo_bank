@@ -4,6 +4,7 @@
         "type": "Savings A/C",
         "balance": "54,285",
         "accountNo": "XX2625",
+        "imageURL": "https://image3.mouthshut.com/images/imagesp/925004501s.png",
         "transactions": [
             {
                 "date": "2021-02-08T13:45:00.000Z",
@@ -45,6 +46,7 @@
         "type": "Savings A/C",
         "balance": "5,44,585",
         "accountNo": "XX7682",
+        "imageURL": "https://play-lh.googleusercontent.com/QifW_OELeiL7Cs5uETJmA8aGXS0Pd9ZrqRaq7Olyl-SbKfOBSXDK7zpE_eCyL99W4AY=s1200",
         "transactions": [
             {
                 "date": "2021-02-08T13:45:00.000Z",

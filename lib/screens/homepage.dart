@@ -67,12 +67,12 @@ class _HomepageState extends State<Homepage> {
               children: [
                 SizedBox(
                   height: 40.0,
-                    child: Image.asset('assets/images/hdfc.png')
+                    child: Image.network(bank.imageURL!)
                 ),
                 const SizedBox(width: 15.0),
                 // SizedBox(
                 //   height: 40.0,
-                //     child: Image.network("https://www.seekpng.com/png/detail/871-8715001_hdfc-bank.png")),
+                //     child: Image.network(bank.imageURL!)),
                 Text(
                   bank.bankName ?? "Null",
                   style: const TextStyle(

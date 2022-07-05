@@ -6,6 +6,7 @@ class BanksModel {
       this.type, 
       this.balance,
       this.accountNo,
+      this.imageURL,
       this.transactions,});
 
   BanksModel.fromJson(dynamic json) {
@@ -13,6 +14,7 @@ class BanksModel {
     type = json['type'];
     balance = json['balance'];
     accountNo = json['accountNo'];
+    imageURL = json['imageURL'];
     if (json['transactions'] != null) {
       transactions = [];
       json['transactions'].forEach((v) {
@@ -24,6 +26,7 @@ class BanksModel {
   String? type;
   String? balance;
   String? accountNo;
+  String? imageURL;
   List<Transactions>? transactions;
 
   Map<String, dynamic> toJson() {
@@ -32,6 +35,7 @@ class BanksModel {
     map['type'] = type;
     map['balance'] = balance;
     map['accountNo'] = accountNo;
+    map['imageURL'] = imageURL;
     if (transactions != null) {
       map['transactions'] = transactions?.map((v) => v.toJson()).toList();
     }
