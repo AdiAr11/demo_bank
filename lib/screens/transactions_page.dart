@@ -85,7 +85,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                     ),
                   ),
 
-                  const SizedBox(width: 70.0,),
+                  const SizedBox(width: 50.0,),
 
                   Text(
                       "₹ ${bank.balance}",

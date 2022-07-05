@@ -81,5 +81,53 @@
                 "typeOfTransaction": "credit"
             }
         ]
+    },
+
+    {
+        "bankName": "Union Bank",
+        "type": "Savings A/C",
+        "balance": "9,99,99,999",
+        "accountNo": "XX786",
+        "imageURL": "https://pdtvjobs.com/wp-content/uploads/2020/09/union-bank.png",
+        "transactions": [
+            {
+                "date": "2022-07-07T13:45:00.000Z",
+                "name": "Finurja Internship",
+                "amount": 180000.00,
+                "typeOfTransaction": "debit"
+            },
+            {
+                "date": "2021-07-07T13:45:00.000Z",
+                "name": "Musical Play",
+                "amount": 2500.00,
+                "typeOfTransaction": "credit"
+            },
+
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "Concert",
+                "amount": 15000.00,
+                "typeOfTransaction": "credit"
+            },
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "ATM Deposit",
+                "amount": 19000.00,
+                "typeOfTransaction": "debit"
+            },
+            {
+                "date": "2021-02-03T13:45:00.000Z",
+                "name": "Macbook Air M1",
+                "amount": 73000.00,
+                "typeOfTransaction": "credit"
+            },
+
+            {
+                "date": "2021-02-01T13:45:00.000Z",
+                "name": "Food",
+                "amount": 400.00,
+                "typeOfTransaction": "credit"
+            }
+        ]
     }
 ]
