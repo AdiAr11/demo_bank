@@ -60,6 +60,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
               color: Colors.white,
             ),
             onPressed: () {
+
             },
           )
         ],
@@ -265,6 +266,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                         state(() {
                                           bottomRadioValue = value!;
                                         });
+                                        setState((){
+                                          bottomRadioValue = value!;
+                                        });
                                       },
                                     ),
                                     Text(sortOptions[0]),
@@ -277,6 +281,9 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                       groupValue: bottomRadioValue,
                                       onChanged: (int? value) {
                                         state(() {
+                                          bottomRadioValue = value!;
+                                        });
+                                        setState((){
                                           bottomRadioValue = value!;
                                         });
                                       },
