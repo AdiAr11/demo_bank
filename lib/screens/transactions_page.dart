@@ -35,6 +35,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
   bool amountCheckedValue = false;
   RangeValues _currentRangeValues = const RangeValues(10000, 80000);
 
+  final filterDialogDecoration = BoxDecoration(
+    color: Colors.lightBlueAccent.shade100,
+  borderRadius: const BorderRadius.all(Radius.circular(20))
+  );
+
   @override
   void initState() {
     // TODO: implement initState
@@ -120,7 +125,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
               const SizedBox(height: 30.0),
               const Divider(thickness: 5.0),
 
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 15.0),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -139,6 +144,72 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       },
                       icon:const Icon(Icons.filter_alt_sharp),
                   )
+                ],
+              ),
+
+              Wrap(
+                spacing: 9.0,
+                runSpacing: 9.0,
+                children: [
+                  Container(
+                    decoration: filterDialogDecoration,
+                    child:
+                    Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: sortByTimeRadioValue == 0 ?
+                      Text(sortOptions[0]) :
+                      Text(sortOptions[1]),
+                    )
+                  ),
+
+                  creditCheckedValue ?
+                  Container(
+                      decoration: filterDialogDecoration,
+                      child:
+                      const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child:
+                        Text("Credit"),
+                      )
+                  ) : const Text(""),
+
+                  debitCheckedValue ?
+                  Container(
+                      decoration: filterDialogDecoration,
+                      child:
+                      const Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child:
+                        Text("Debit"),
+                      )
+                  ) : const Text(""),
+
+                  amountCheckedValue ?
+                  Container(
+                      decoration: filterDialogDecoration,
+                      child:
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child:
+                        Text.rich(
+                          TextSpan(
+                            children: [
+                              const TextSpan(text: "Amount between "),
+                              TextSpan(
+                                  text: "₹${_currentRangeValues.start.toStringAsFixed(0)}" ,
+                                  style: const TextStyle(fontWeight: FontWeight.bold)
+                              ),
+                              const TextSpan(text: " and "),
+                              TextSpan(
+                                  text: " ₹${_currentRangeValues.end.toStringAsFixed(0)}" ,
+                                  style: const TextStyle(fontWeight: FontWeight.bold)
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                  ) : const Text("")
+
                 ],
               ),
 
