@@ -26,12 +26,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
   List transactions = [];
   List filteredTransactions = [];
 
-  bool bottomIsChecked = false;
-  bool bottomIsSwitched = false;
-  int bottomRadioValue = 0;
+  // bool bottomIsChecked = false;
+  // bool bottomIsSwitched = false;
+  int sortByTimeRadioValue = 0;
 
-  bool creditCheckedValue = false;
-  bool debitCheckedValue = false;
+  bool creditCheckedValue = true;
+  bool debitCheckedValue = true;
   bool amountCheckedValue = false;
   RangeValues _currentRangeValues = const RangeValues(10000, 80000);
 
@@ -145,12 +145,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
               GroupedListView<dynamic, String>(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                elements: transactions,
+                elements: filteredTransactions,
                 groupBy: (element) => element["date"],
                 groupComparator: (value1, value2) => value2.compareTo(value1),
                 // itemComparator: (item1, item2) =>
                 //     item1['name'].compareTo(item2['name']),
-                order: bottomRadioValue == 0 ? GroupedListOrder.ASC : GroupedListOrder.DESC,
+                order: sortByTimeRadioValue == 0 ? GroupedListOrder.ASC : GroupedListOrder.DESC,
                 useStickyGroupSeparators: true,
                 groupSeparatorBuilder: (String value) => Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -215,6 +215,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   void _showBottomModalSheet(){
     showModalBottomSheet(
+        isScrollControlled: true,
         shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(
                 top: Radius.circular(20.0)
@@ -257,13 +258,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                   children: [
                                     Radio(
                                       value: 0,
-                                      groupValue: bottomRadioValue,
+                                      groupValue: sortByTimeRadioValue,
                                       onChanged: (int? value) {
                                         state(() {
-                                          bottomRadioValue = value!;
+                                          sortByTimeRadioValue = value!;
                                         });
                                         setState((){
-                                          bottomRadioValue = value!;
+                                          sortByTimeRadioValue = value!;
                                         });
                                       },
                                     ),
@@ -274,13 +275,13 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                   children: [
                                     Radio(
                                       value: 1,
-                                      groupValue: bottomRadioValue,
+                                      groupValue: sortByTimeRadioValue,
                                       onChanged: (int? value) {
                                         state(() {
-                                          bottomRadioValue = value!;
+                                          sortByTimeRadioValue = value!;
                                         });
                                         setState((){
-                                          bottomRadioValue = value!;
+                                          sortByTimeRadioValue = value!;
                                         });
                                       },
                                     ),
@@ -364,6 +365,16 @@ class _TransactionsPageState extends State<TransactionsPage> {
                               });
                             },
                           ),
+                          
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text("₹0"),
+                              Text("₹1L+"),
+                            ],
+                          ),
+
+                          const SizedBox(height: 15.0,),
 
                           Row(
                             mainAxisSize: MainAxisSize.max,
@@ -404,7 +415,11 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                             )
                                         )
                                     ),
-                                    onPressed: (){},
+                                    onPressed: (){
+                                      applyFilters();
+                                      state((){});
+                                      Navigator.pop(context);
+                                    },
                                     child: const Text(
                                         "Apply",
                                         style: TextStyle(fontSize: 14)
@@ -426,15 +441,42 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   void resetFilters(){
-    bottomIsChecked = false;
-    bottomIsSwitched = false;
-    bottomRadioValue = 0;
+    // bottomIsChecked = false;
+    // bottomIsSwitched = false;
+    sortByTimeRadioValue = 0;
 
-    creditCheckedValue = false;
-    debitCheckedValue = false;
+    creditCheckedValue = true;
+    debitCheckedValue = true;
     amountCheckedValue = false;
     _currentRangeValues = const RangeValues(10000, 80000);
+
+    filteredTransactions = transactions;
     setState((){});
+  }
+
+  applyFilters(){
+
+    if(creditCheckedValue && !debitCheckedValue) {
+      filteredTransactions = transactions.where((transaction) =>
+      transaction['typeOfTransaction'] == 'credit'
+      ).toList();
+
+    } else if(debitCheckedValue && !creditCheckedValue) {
+      filteredTransactions = transactions.where((transaction) =>
+      transaction['typeOfTransaction'] == 'debit'
+      ).toList();
+    }else{
+      filteredTransactions = transactions;
+    }
+
+    if(amountCheckedValue) {
+      filteredTransactions = filteredTransactions.where((transaction) =>
+      transaction['amount'] >= _currentRangeValues.start && transaction['amount'] <= _currentRangeValues.end
+      ).toList();
+    }
+
+    setState((){});
+
   }
 
   Future loadJson() async {
@@ -447,18 +489,12 @@ class _TransactionsPageState extends State<TransactionsPage> {
     bank = BanksModel.fromJson(jsonResult[index]);
     transactions = bank.transactions!.map((h) => {"date": h.date, "name": h.name,
       "amount": h.amount, "typeOfTransaction": h.typeOfTransaction}).toList();
-    // for(Transactions transaction  in bank.transactions!){
-    //   transactions.add(transaction);
-    // }
+
+    filteredTransactions = transactions;
 
     setState((){
       isLoading = false;
     });
-
-    // t = transactions.map((h) => {"date": h.date, "name": h.name,
-    //   "amount": h.amount, "typeOfTransaction": h.typeOfTransaction}).toList();
-    //
-    // print(t);
 
     // groupByDate();
 
