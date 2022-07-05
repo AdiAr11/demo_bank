@@ -48,34 +48,34 @@
         "transactions": [
             {
                 "date": "2021-02-08T13:45:00.000Z",
-                "name": "PGVCL Electricity Bill",
-                "amount": 2500.00,
+                "name": "Movie tickets",
+                "amount": 250.00,
                 "typeOfTransaction": "credit"
             },
 
             {
                 "date": "2021-02-03T13:45:00.000Z",
-                "name": "ATM Withdrawal",
+                "name": "Shopping",
                 "amount": 1500.00,
                 "typeOfTransaction": "credit"
             },
             {
                 "date": "2021-02-03T13:45:00.000Z",
                 "name": "ATM Deposit",
-                "amount": 1400.00,
+                "amount": 1900.00,
                 "typeOfTransaction": "debit"
             },
             {
                 "date": "2021-02-03T13:45:00.000Z",
-                "name": "ATM Deposit",
-                "amount": 8500.00,
+                "name": "Gift",
+                "amount": 800.00,
                 "typeOfTransaction": "debit"
             },
 
             {
                 "date": "2021-02-01T13:45:00.000Z",
-                "name": "ATM Withdrawal",
-                "amount": 1200.00,
+                "name": "iPhone Purchase",
+                "amount": 120000.00,
                 "typeOfTransaction": "credit"
             }
         ]
