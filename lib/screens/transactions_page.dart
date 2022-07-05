@@ -1,10 +1,12 @@
 import 'dart:convert';
 
-import 'package:demo_bank/models/BanksModel.dart';
+import 'package:demo_bank/models/banks_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grouped_list/grouped_list.dart';
 import "package:collection/collection.dart";
+
+import '../models/transaction_model.dart';
 
 class TransactionsPage extends StatefulWidget {
 

@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:demo_bank/models/BanksModel.dart';
+import 'package:demo_bank/models/banks_model.dart';
 import 'package:demo_bank/screens/transactions_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;

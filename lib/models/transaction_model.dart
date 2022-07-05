@@ -1,23 +1,37 @@
+class Transactions {
+  Transactions({
+    this.date,
+    this.name,
+    this.amount,
+    this.typeOfTransaction,});
 
-class TransactionModel{
-  final String date;
-  final String name;
-  final String amount;
-  final String typeOfTransaction;
+  Transactions.fromJson(dynamic json) {
+    date = json['date'];
+    name = json['name'];
+    amount = json['amount'];
+    typeOfTransaction = json['typeOfTransaction'];
+  }
+  String? date;
+  String? name;
+  double? amount;
+  String? typeOfTransaction;
 
-  TransactionModel({
-    required this.date,
-    required this.name,
-    required this.amount,
-    required this.typeOfTransaction
-});
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{};
+    map['date'] = date;
+    map['name'] = name;
+    map['amount'] = amount;
+    map['typeOfTransaction'] = typeOfTransaction;
+    return map;
+  }
 
-  // factory TransactionModel.fromJson(Map<String, dynamic> json) {
-  //   final name = json['name'];
-  //   final amount = json['amount'];
-  //   final typeOfTransaction = json['typeOfTransaction'];
-  //   return TransactionModel(name: name, amount: amount, typeOfTransaction: typeOfTransaction);
-  // }
-
-
+  @override
+  String toString() {
+    return 'Transactions('
+        'date: $date,'
+        'name: $name,'
+        'amount: $amount,'
+        'typeOfTransaction: $typeOfTransaction'
+        ')';
+  }
 }
