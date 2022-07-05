@@ -6,12 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:grouped_list/grouped_list.dart';
 import "package:collection/collection.dart";
 
-import '../models/transaction_model.dart';
-
 class TransactionsPage extends StatefulWidget {
 
   final int index;
-  static const id = "transactions";
 
   const TransactionsPage({Key? key, required this.index}) : super(key: key);
 
@@ -27,8 +24,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
   List<String> sortOptions = ["Latest to Oldest", "Oldest to Latest"];
   List transactions = [];
-  Map<String?,List<Transactions>> orderedTransactions = {};
-  // List t = [];
+  List filteredTransactions = [];
 
   bool bottomIsChecked = false;
   bool bottomIsSwitched = false;
@@ -37,7 +33,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
   bool creditCheckedValue = false;
   bool debitCheckedValue = false;
   bool amountCheckedValue = false;
-  RangeValues _currentRangeValues = const RangeValues(1000, 80000);
+  RangeValues _currentRangeValues = const RangeValues(10000, 80000);
 
   @override
   void initState() {
@@ -92,7 +88,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   const SizedBox(width: 70.0,),
 
                   Text(
-                      "\$ ${bank.balance}",
+                      "₹ ${bank.balance}",
                     style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 20.0
@@ -161,7 +157,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
-                      Divider(thickness: 1.0,),
+                      const Divider(thickness: 1.0,),
                       Text(
                         value.substring(0, 10),
                         style: const TextStyle(fontSize: 14),
@@ -327,7 +323,24 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           ),
 
                           CheckboxListTile(
-                            title: const Text("Amount "),
+                            // title: Text("Amount between ₹ ${_currentRangeValues.start} "
+                            //     "and ₹ ${_currentRangeValues.end}"),
+                            title: Text.rich(
+                              TextSpan(
+                                children: [
+                                  const TextSpan(text: "Amount between "),
+                                  TextSpan(
+                                      text: "₹${_currentRangeValues.start.toStringAsFixed(0)}" ,
+                                      style: const TextStyle(fontWeight: FontWeight.bold)
+                                  ),
+                                  const TextSpan(text: " and "),
+                                  TextSpan(
+                                      text: " ₹${_currentRangeValues.end.toStringAsFixed(0)}" ,
+                                      style: const TextStyle(fontWeight: FontWeight.bold)
+                                  ),
+                                ],
+                              ),
+                            ),
                             value: amountCheckedValue,
                             onChanged: (newValue) {
                               state(() {
@@ -340,7 +353,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                           RangeSlider(
                             values: _currentRangeValues,
                             max: 100000,
-                            divisions: 10000,
+                            divisions: 1000,
                             labels: RangeLabels(
                               _currentRangeValues.start.round().toString(),
                               _currentRangeValues.end.round().toString(),
@@ -361,7 +374,10 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                 width: MediaQuery.of(context).size.width / 2 - 20.0 ,
                                 height: 50.0,
                                 child: ElevatedButton(
-                                    onPressed: (){},
+                                    onPressed: (){
+                                      resetFilters();
+                                      state((){});
+                                    },
                                     style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all<Color>(Colors.white),
                                         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -371,7 +387,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
                                             )
                                         )
                                     ),
-                                    child: Text("Reset", style: TextStyle(color: Colors.purple),)),
+                                    child: const Text("Reset", style: TextStyle(color: Colors.purple),)),
                               ),
 
                               SizedBox(
@@ -409,6 +425,18 @@ class _TransactionsPageState extends State<TransactionsPage> {
     );
   }
 
+  void resetFilters(){
+    bottomIsChecked = false;
+    bottomIsSwitched = false;
+    bottomRadioValue = 0;
+
+    creditCheckedValue = false;
+    debitCheckedValue = false;
+    amountCheckedValue = false;
+    _currentRangeValues = const RangeValues(10000, 80000);
+    setState((){});
+  }
+
   Future loadJson() async {
     setState((){
       isLoading = true;
@@ -418,7 +446,7 @@ class _TransactionsPageState extends State<TransactionsPage> {
 
     bank = BanksModel.fromJson(jsonResult[index]);
     transactions = bank.transactions!.map((h) => {"date": h.date, "name": h.name,
-      "amount": h.amount, "typeOfTransaction": h.typeOfTransaction}).toList();;
+      "amount": h.amount, "typeOfTransaction": h.typeOfTransaction}).toList();
     // for(Transactions transaction  in bank.transactions!){
     //   transactions.add(transaction);
     // }

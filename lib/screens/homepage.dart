@@ -95,7 +95,7 @@ class _HomepageState extends State<Homepage> {
                     children: [
                       const TextSpan(text: 'Your Balance\n'),
                       TextSpan(
-                        text: "\$ ${bank.balance}",
+                        text: "₹ ${bank.balance}",
                         style: const TextStyle(
                             fontWeight: FontWeight.bold,
                           fontSize: 20.0
