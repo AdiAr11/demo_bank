@@ -4,7 +4,6 @@ import 'package:demo_bank/models/banks_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:grouped_list/grouped_list.dart';
-import "package:collection/collection.dart";
 
 class TransactionsPage extends StatefulWidget {
 
@@ -166,10 +165,28 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   Container(
                       decoration: filterDialogDecoration,
                       child:
-                      const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child:
-                        Text("Credit"),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child:
+                            Text("Credit"),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              creditCheckedValue = false;
+                              applyFilters();
+                              setState((){});
+                            }, // Image tapped
+                            child: Image.asset(
+                              'assets/images/x.png',
+                              width: 20.0,
+                              height: 10.0,
+                            ),
+                          )
+                        ],
                       )
                   ) : const Text(""),
 
@@ -177,10 +194,27 @@ class _TransactionsPageState extends State<TransactionsPage> {
                   Container(
                       decoration: filterDialogDecoration,
                       child:
-                      const Padding(
-                        padding: EdgeInsets.all(10.0),
-                        child:
-                        Text("Debit"),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Padding(
+                            padding: EdgeInsets.all(10.0),
+                            child:
+                            Text("Debit"),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              debitCheckedValue = false;
+                              applyFilters();
+                              setState((){});
+                            }, // Image tapped
+                            child: Image.asset(
+                              'assets/images/x.png',
+                              width: 20.0,
+                              height: 10.0,
+                            ),
+                          )
+                        ],
                       )
                   ) : const Text(""),
 
@@ -189,23 +223,40 @@ class _TransactionsPageState extends State<TransactionsPage> {
                       decoration: filterDialogDecoration,
                       child:
                       Padding(
-                        padding: EdgeInsets.all(10.0),
+                        padding: const EdgeInsets.all(10.0),
                         child:
-                        Text.rich(
-                          TextSpan(
-                            children: [
-                              const TextSpan(text: "Amount between "),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text.rich(
                               TextSpan(
-                                  text: "₹${_currentRangeValues.start.toStringAsFixed(0)}" ,
-                                  style: const TextStyle(fontWeight: FontWeight.bold)
+                                children: [
+                                  const TextSpan(text: "Amount between "),
+                                  TextSpan(
+                                      text: "₹${_currentRangeValues.start.toStringAsFixed(0)}" ,
+                                      style: const TextStyle(fontWeight: FontWeight.bold)
+                                  ),
+                                  const TextSpan(text: " and "),
+                                  TextSpan(
+                                      text: " ₹${_currentRangeValues.end.toStringAsFixed(0)}" ,
+                                      style: const TextStyle(fontWeight: FontWeight.bold)
+                                  ),
+                                ],
                               ),
-                              const TextSpan(text: " and "),
-                              TextSpan(
-                                  text: " ₹${_currentRangeValues.end.toStringAsFixed(0)}" ,
-                                  style: const TextStyle(fontWeight: FontWeight.bold)
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                amountCheckedValue = false;
+                                applyFilters();
+                                setState((){});
+                              }, // Image tapped
+                              child: Image.asset(
+                                'assets/images/x.png',
+                                width: 20.0,
+                                height: 10.0,
                               ),
-                            ],
-                          ),
+                            )
+                          ],
                         ),
                       )
                   ) : const Text("")
@@ -512,8 +563,6 @@ class _TransactionsPageState extends State<TransactionsPage> {
   }
 
   void resetFilters(){
-    // bottomIsChecked = false;
-    // bottomIsSwitched = false;
     sortByTimeRadioValue = 0;
 
     creditCheckedValue = true;
