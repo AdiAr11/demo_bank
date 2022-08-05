@@ -92,7 +92,7 @@
         "transactions": [
             {
                 "date": "2022-07-07T13:45:00.000Z",
-                "name": "Finurja Internship",
+                "name": "SDE II",
                 "amount": 180000.00,
                 "typeOfTransaction": "debit"
             },
